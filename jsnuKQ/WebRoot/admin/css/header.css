@@ -1,0 +1,29 @@
+.navbar {
+	position: relative;
+	min-height: 87px;
+	box-shadow: 2px 2px 2px grey;
+	background-color: rgba(38, 140, 115, 0.99);
+}
+
+.navbar-default .navbar-nav>.active>a,.navbar-default .navbar-nav>.active>a:focus,.navbar-default .navbar-nav>.active>a:hover
+	{
+	color: #555;
+	background-color: #2196F3;
+}
+
+.carousel-inner>.item>a>img,.carousel-inner>.item>img,.img-responsive,.thumbnail a>img,.thumbnail>img
+	{
+	height: 60px;
+}
+
+.nav>li {
+	font-size: 20px;
+	margin-right: 118px;
+	margin-top: 18px;
+}
+/*设置链接的大小和颜色*/
+.navbar-default .navbar-nav>li>a {
+	color: #9fc34a;
+	font-size: 29px;
+	font-weight: 400;
+}

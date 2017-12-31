@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans.xsd  
+    http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context.xsd  
+    http://www.springframework.org/schema/aop  
+    http://www.springframework.org/schema/aop/spring-aop.xsd  
+    http://www.springframework.org/schema/tx  
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<!-- 开启注解的扫描，这个是到指定的包中扫描类，属性，方法上面的注解 -->
+	<context:component-scan base-package="com"></context:component-scan>
+
+	<!-- 配置c3p0连接池 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql:///kaoqin"></property>
+		<property name="user" value="root"></property>
+		<property name="password" value="root"></property>
+	</bean>
+
+	<!-- 创建SessionFactory对象，这个使用的是spring.orm中的localSessionFactoryBean中可以创建 -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<!-- 注入DataSource，指定的是前面配置的c3p0连接池 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- 指定hibernate的核心配置文件的位置 -->
+		<property name="configLocations" value="classpath:hibernate.cfg.xml"></property>
+	</bean>
+
+
+	<!-- 配置事务管理器,注意这里配置的是Hibernate5的事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<!-- 注入其中的属性，这里的注入的前面创建的SessionFactory对象 -->
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 开启事务的注解 ，其中指定的是前面配置的事务管理transactionManager -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+	<!-- 配置HibernateTemplate对象，这里需要注入的是SessionFactory这个属性，因为构造方法中传入的参数就是一个SessionFactory对象，因此需要使用属性注入 -->
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+
+	<!-- 配置action对象 ，注意一定要使用多例的prototype 学生的action -->
+	<bean id="userAction" class="com.student.action.UserAction" scope="prototype"></bean>
+	<bean id="changeAction" class="com.student.action.StudentChangeAction"
+		scope="prototype"></bean>
+
+	<!-- 创建UserService对象 -->
+	<bean id="userService" class="com.student.service.UserService"></bean>
+	<!-- 创建UserDaoImpl对象 -->
+	<bean id="userDaoImpl" class="com.student.dao.UserDaoImpl"></bean>
+
+	<!-- 创建拦截器类 -->
+	<bean id="autoLoginInterceptor" class="com.tools.interceptor.AutoLoginInterceptor"></bean>
+	<bean id="autoStudentInterceptor" class="com.tools.interceptor.AutoStudentInterceptor"></bean>
+
+
+
+
+	<!-- 创建教师类的Action对象 -->
+	<bean id="adminAction" class="com.admin.action.AdminAction" scope="prototype"></bean>
+
+	<!-- 管理学生刷新 -->
+	<bean id="refreshAction" class="com.admin.action.RefreshAction"
+		scope="prototype"></bean>
+
+	<!-- 管理教师的刷新action -->
+	<bean id="refreshTeacher" class="com.admin.action.RefreshTeacher"
+		scope="prototype"></bean>
+
+	<!-- 删除学生的action -->
+	<bean id="deleteTeacherAction" class="com.admin.action.DeleteTeacherAction"
+		scope="prototype"></bean>
+
+	<!-- 删除教师的action -->
+	<bean id="deleteAction" class="com.admin.action.DeleteAction"
+		scope="prototype"></bean>
+
+	<!-- 修改 学生信息 -->
+	<bean id="change" class="com.admin.action.ChangeAction" scope="prototype"></bean>
+
+	<!-- 修改 教师信息 -->
+	<bean id="chageTeacherAction" class="com.admin.action.ChageTeacherAction"
+		scope="prototype"></bean>
+
+	<!-- 添加学生 -->
+	<bean id="AddStudent" class="com.admin.action.AddStudentAction"
+		scope="prototype"></bean>
+
+	<!-- 添加教师 -->
+	<bean id="addTeacher" class="com.admin.action.AddTeacherAction"
+		scope="prototype"></bean>
+
+	<!-- 根据学号检测用户是否存在 -->
+	<bean id="verificationStudentID" class="com.admin.action.VerificationStudentID"
+		scope="prototype"></bean>
+
+	<!-- 根据教工号检测用户是否存在 -->
+	<bean id="verificationTeacherIDAction" class="com.admin.action.VerificationTeacherIDAction"
+		scope="prototype"></bean>
+		
+	<!-- 教师考核学生的action-->
+	<bean id="TeacherCheckAction" class="com.admin.action.TeacherCheckAction"
+		scope="prototype"></bean>
+
+
+
+	<bean id="adminService" class="com.admin.service.AdminService"></bean>
+
+	<bean id="adminDaoImpl" class="com.admin.dao.AdminDaoImpl"></bean>
+
+
+</beans>
+    

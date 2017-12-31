@@ -1,0 +1,54 @@
+caption {
+    text-align: center;
+    font-size: 50px;
+    font-weight: bolder;
+    letter-spacing: 147px;
+    font-family: cursive;
+    color: rgba(52, 123, 128, 0.86);
+}
+
+th {
+    text-align: center;
+    font-size: 33px;
+    font-weight: normal;
+    font-family: cursive;
+}
+
+td{
+    padding: 0;
+    text-align: center;
+    font-family: -webkit-pictograph;
+    font-size: 19px;
+    color: rgb(20, 20, 23);
+}
+
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 400;
+    margin-right: 15px;
+}
+
+.btn-group-sm>.btn, .btn-sm {
+    padding: 5px 10px;
+    font-size: 22px;
+    line-height: 1.5;
+    border-radius: 8px;
+    position: relative;
+    bottom: -17px;
+}
+
+button#btn-submit {
+    font-size: 20px;
+    border-radius: 24px;
+}
+
+footer{
+    position: relative;
+    bottom: 0;
+    /* text-align: center; */
+    left: 364px;
+    font-size: 12px;
+}
+

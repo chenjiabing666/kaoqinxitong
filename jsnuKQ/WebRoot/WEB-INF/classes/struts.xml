@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="User" extends="struts-default" namespace="/student">
+
+		<interceptors>
+			<interceptor name="AutoLogin" class="autoStudentInterceptor"></interceptor>
+		</interceptors>
+
+		<!-- 配置userAction类，其中这里的class是spring配置文件中创建对象的id -->
+		<action name="login" class="userAction">
+
+			<!-- 登录成功后重定向到首页的action -->
+			<result name="success" type="redirectAction">home</result>
+			<result name="input">login.jsp</result>
+
+		</action>
+
+		<!-- 配置注册的action -->
+		<action name="regist" class="userAction" method="regist">
+			<result name="regist">regist.jsp</result>
+			<result name="success" type="chain">home</result>
+		</action>
+
+		<!-- 跳转到首页的action -->
+		<action name="home" class="userAction" method="HomePage">
+			<result name="input">login.jsp</result>
+			<result name="success">index.jsp</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<!-- 设置拦截器，如果直接访问主页，那么要先查看是否session中有自动登录的结果，如果没有就先登录 -->
+			<interceptor-ref name="AutoLogin"></interceptor-ref>
+		</action>
+
+		<!-- 配置修改学生信息的action，实现的是ajax请求 -->
+		<action name="change" class="changeAction">
+			<result name="success" type="stream">
+				<!-- 指定InputStream的名称，这个是使用Action类中的get方法获取的 -->
+				<param name="inputName">inputStream</param>
+				<!-- 指定响应的类型 -->
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<!-- 配置退出action，直接跳转到登录界面 -->
+		<action name="exit" class="userAction" method="Exit">
+			<result name="success" type="redirect">login.jsp</result>
+		</action>
+	</package>
+
+
+
+
+
+	<!-- 教师 -->
+	<package name="Admin" extends="json-default" namespace="/admin">
+
+		<!-- 配置拦截器 -->
+		<interceptors>
+			<interceptor name="AutoLogin" class="autoLoginInterceptor"></interceptor>
+		</interceptors>
+
+		<!-- 跳转到时候首页的action类 -->
+		<action name="home" class="adminAction" method="home">
+			<result name="input">login.jsp</result>
+			<result name="teacher">check.jsp</result>
+			<result name="admin">admin.jsp</result>
+			<!-- 定义拦截器，不过一定要定义其中返回的字符串，否则将会报错 -->
+			<interceptor-ref name="AutoLogin"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+
+		<!-- 登录的的action -->
+		<action name="login" class="adminAction">
+			<result name="input">login.jsp</result>
+			<result name="success" type="redirectAction">home</result>
+		</action>
+
+		<!-- 注册的action -->
+		<action name="regist" class="adminAction" method="regist">
+			<result name="regist">regist.jsp</result>
+			<result name="success">index.jsp</result>
+		</action>
+
+		<!-- 退出系统的action -->
+		<action name="exit" class="adminAction" method="exit">
+			<result name="input" type="redirect">login.jsp</result>
+		</action>
+
+
+		<!-- 配置刷新的action，响应ajax -->
+		<action name="refresh" class="refreshAction">
+			<result name="success" type="json"></result>
+		</action>
+
+		<!-- 配置管理教师界面刷新的action，响应ajax -->
+		<action name="refreshTeacher" class="refreshTeacher">
+			<result name="success" type="json"></result>
+		</action>
+
+		<!-- 删除 学生的action -->
+		<action name="del" class="deleteAction">
+			<result name="success" type="stream">
+				<!-- 指定InputStream的名称，这个是使用Action类中的get方法获取的 -->
+				<param name="inputName">inputStream</param>
+				<!-- 指定响应的类型 -->
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+
+
+		<!-- 删除 教师的action -->
+		<action name="deleteTeacher" class="deleteTeacherAction">
+			<result name="success" type="stream">
+				<!-- 指定InputStream的名称，这个是使用Action类中的get方法获取的 -->
+				<param name="inputName">inputStream</param>
+				<!-- 指定响应的类型 -->
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<!-- 修改学生信息 -->
+		<action name="change" class="change">
+			<result name="success" type="stream">
+				<!-- 指定InputStream的名称，这个是使用Action类中的get方法获取的 -->
+				<param name="inputName">inputStream</param>
+				<!-- 指定响应的类型 -->
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<!-- 修改 教师信息 -->
+		<action name="changeTeacher" class="chageTeacherAction">
+			<result name="success" type="stream">
+				<!-- 指定InputStream的名称，这个是使用Action类中的get方法获取的 -->
+				<param name="inputName">inputStream</param>
+				<!-- 指定响应的类型 -->
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+
+
+		<!-- 添加学生调用的异步加载 -->
+		<action name="add_st" class="AddStudent">
+			<result name="success" type="stream">
+				<!-- 指定InputStream的名称，这个是使用Action类中的get方法获取的 -->
+				<param name="inputName">inputStream</param>
+				<!-- 指定响应的类型 -->
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 添加教师调用的异步加载 -->
+		<action name="addTeacher" class="addTeacher">
+			<result name="success" type="stream">
+				<!-- 指定InputStream的名称，这个是使用Action类中的get方法获取的 -->
+				<param name="inputName">inputStream</param>
+				<!-- 指定响应的类型 -->
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<!-- 添加学生调用的action -->
+		<action name="AddStudent" class="adminAction" method="addStudent">
+			<result name="success">AddStudent.jsp</result>
+			<result name="input">login.jsp</result>
+			<!-- 定义拦截器，不过一定要定义其中返回的字符串，否则将会报错 -->
+			<interceptor-ref name="AutoLogin"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+
+
+		<!-- 添加教师调用的action -->
+		<action name="AddTeacher" class="adminAction" method="addTeacher">
+			<result name="success">AddTeacher.jsp</result>
+			<result name="input">login.jsp</result>
+			<!-- 定义拦截器，不过一定要定义其中返回的字符串，否则将会报错 -->
+			<interceptor-ref name="AutoLogin"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+
+
+
+		<!-- 检测用户是否存在调用的异步加载 -->
+		<action name="verificationID" class="verificationStudentID">
+			<result name="success" type="stream">
+				<!-- 指定InputStream的名称，这个是使用Action类中的get方法获取的 -->
+				<param name="inputName">inputStream</param>
+				<!-- 指定响应的类型 -->
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 检测用户是否存在调用的异步加载 -->
+		<action name="verificationTeacherID" class="verificationTeacherIDAction">
+			<result name="success" type="stream">
+				<!-- 指定InputStream的名称，这个是使用Action类中的get方法获取的 -->
+				<param name="inputName">inputStream</param>
+				<!-- 指定响应的类型 -->
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		
+		<!-- 检测用户是否存在调用的异步加载 -->
+		<action name="teacherCheck" class="TeacherCheckAction">
+			<result name="success" type="redirectAction">home</result>
+		</action>
+
+		<action name="manage-teacher" class="adminAction" method="ManageTeacher">
+			<result name="success">manage_teacher.jsp</result>
+			<result name="input">login.jsp</result>
+			<!-- 定义拦截器，不过一定要定义其中返回的字符串，否则将会报错 -->
+			<interceptor-ref name="AutoLogin"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+
+
+	</package>
+
+</struts>    

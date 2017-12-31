@@ -1,0 +1,40 @@
+.row {
+	margin-top: 23px;
+}
+
+caption {
+	text-align: center;
+	font-size: 50px;
+	font-weight: bolder;
+	letter-spacing: 223px;
+	font-family: cursive;
+	color: rgba(52, 123, 128, 0.86);
+}
+
+th {
+	text-align: center;
+	font-size: 33px;
+	font-weight: normal;
+	font-family: cursive;
+}
+
+td {
+	padding: 0;
+	text-align: center;
+	font-family: -webkit-pictograph;
+	font-size: 19px;
+	color: rgb(20, 20, 23);
+}
+
+footer {
+	position: relative;
+	bottom: 0;
+	/* text-align: center; */
+	left: 533px;
+	font-size: 12px;
+}
+
+button#btn-refresh {
+	position: relative;
+	bottom: -14px;
+}
